@@ -1,21 +1,13 @@
 import React, { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "./store/hook";
 import { useTranslation } from "react-i18next";
-import {
-  DatePicker,
-  Input,
-  Radio,
-  Button,
-  Form,
-  Select,
-  Space,
-  Table,
-} from "antd";
+import { DatePicker, Input, Radio, Button, Form, Select } from "antd";
 import "./main.scss";
 import Tabledata from "./table";
-import { insertData, DataState } from "./store/formReducer";
+import { insertData, DataState, resetCurrent } from "./store/formReducer";
 import dayjs from "dayjs";
 import { NavLink } from "react-router-dom";
+import { useWatch } from "antd/es/form/Form";
 
 const { Option } = Select;
 
@@ -34,6 +26,13 @@ const Testthree = () => {
   const { i18n } = useTranslation();
   const { t } = useTranslation();
   const [form] = Form.useForm();
+
+  const first = useWatch(["Citizen ID", "first"], form);
+  const second = useWatch(["Citizen ID", "second"], form);
+  const third = useWatch(["Citizen ID", "third"], form);
+  const fourth = useWatch(["Citizen ID", "fourth"], form);
+  const fifth = useWatch(["Citizen ID", "fifth"], form);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -41,9 +40,6 @@ const Testthree = () => {
   }, [language]);
   useEffect(() => {
     if (Object.keys(edit).length === 0) return;
-    console.log(edit.Birthday);
-    console.log(edit.Birthday.split('"'));
-    console.log(new Date(edit.Birthday.split('"')[1]));
 
     form.setFieldsValue({
       ...edit,
@@ -51,28 +47,13 @@ const Testthree = () => {
     });
   }, [edit]);
 
-  const onGenderChange = (value: string) => {
-    switch (value) {
-      case "male":
-        form.setFieldsValue({ note: "Hi, man!" });
-        break;
-      case "female":
-        form.setFieldsValue({ note: "Hi, lady!" });
-        break;
-      case "other":
-        form.setFieldsValue({ note: "Hi there!" });
-        break;
-      default:
-    }
-  };
-
   const onFinish = (values: DataState) => {
     var data = {
       ...values,
       Birthday: JSON.stringify(values.Birthday),
       key: edit.key,
     };
-    console.log(data);
+
     dispatch(insertData(data));
     alert("Save Success");
     onReset();
@@ -80,30 +61,8 @@ const Testthree = () => {
 
   const onReset = () => {
     form.resetFields();
+    dispatch(resetCurrent());
   };
-
-  const onFill = () => {
-    form.setFieldsValue({ note: "Hello world!", gender: "male" });
-  };
-
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 100 }} className="flag" value={edit.prefix}>
-        <Option value="+66" className="option">
-          <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/TH.svg" />
-          +66
-        </Option>
-        <Option value="+1" className="option">
-          <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" />
-          +1
-        </Option>
-        <Option value="+23" className="option">
-          <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/FR.svg" />
-          +23
-        </Option>
-      </Select>
-    </Form.Item>
-  );
 
   return (
     <div>
@@ -126,31 +85,36 @@ const Testthree = () => {
           name="control-hooks"
           onFinish={onFinish}
           className="form-style"
-          labelAlign="left"
           style={{
             display: "flex",
             flexWrap: "wrap",
           }}
         >
           <Form.Item
+            style={{ marginRight: "10px", width: "calc(20% - 10px)" }}
             name="Title"
             label={t("Title")}
             rules={[
-              { required: true, message: t("Please input your") + t("Title") },
+              {
+                required: true,
+                message: t("Please input your") + t("Title"),
+              },
             ]}
+            wrapperCol={{ span: "100%" }}
+            labelCol={{ span: "100%" }}
           >
-            <Select
-              placeholder={t("Title")}
-              onChange={onGenderChange}
-              allowClear
-            >
+            <Select placeholder={t("Title")} allowClear>
               <Option value="Mr.">{t("Mr.")}</Option>
               <Option value="Mrs.">{t("Mrs.")}</Option>
               <Option value="Ms.">{t("Ms.")}</Option>
             </Select>
           </Form.Item>
           <Form.Item
-            wrapperCol={{ sm: 24 }}
+            style={{
+              display: "inline-block",
+              width: "calc(40% - 10px)",
+              marginRight: "10px",
+            }}
             name="Firstname"
             label={t("Firstname")}
             rules={[
@@ -159,10 +123,13 @@ const Testthree = () => {
                 message: t("Please input your") + t("Firstname"),
               },
             ]}
+            wrapperCol={{ span: "100%" }}
+            labelCol={{ span: "100%" }}
           >
             <Input style={{ width: "100%" }} value={edit.Firstname} />
           </Form.Item>
           <Form.Item
+            wrapperCol={{ span: "100%" }}
             name="Lastname"
             label={t("Lastname")}
             rules={[
@@ -171,8 +138,10 @@ const Testthree = () => {
                 message: t("Please input your") + t("Lastname"),
               },
             ]}
+            labelCol={{ span: "100%" }}
+            style={{ width: "calc(40% - 10px)" }}
           >
-            <Input />
+            <Input style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item
             name="Birthday"
@@ -183,8 +152,11 @@ const Testthree = () => {
                 message: t("Please input your") + t("Birthday"),
               },
             ]}
+            wrapperCol={{ span: "100%" }}
+            labelCol={{ span: "100%" }}
+            style={{ marginRight: "10px" }}
           >
-            <DatePicker format="MM/DD/YYYY" placeholder={t("mm/dd/yyyy")} />
+            <DatePicker format="MM-DD-YYYY" placeholder={t("mm/dd/yyyy")} />
           </Form.Item>
           <Form.Item
             name="Nationality"
@@ -195,6 +167,9 @@ const Testthree = () => {
                 message: t("Please input your") + t("Nationality"),
               },
             ]}
+            wrapperCol={{ span: "100%" }}
+            labelCol={{ span: "100%" }}
+            style={{ width: "calc(50% - 10px)", marginRight: "10px" }}
           >
             <Select placeholder={t("--Please Select--")} allowClear>
               <Option value="Thai">{t("Thai")}</Option>
@@ -202,8 +177,127 @@ const Testthree = () => {
               <Option value="American">{t("American")}</Option>
             </Select>
           </Form.Item>
-          <Form.Item name="Citizen ID" label={t("Citizen ID")}>
-            <Input />
+          <Form.Item
+            label={t("Citizen ID")}
+            wrapperCol={{ span: "100%" }}
+            labelCol={{ span: "100%" }}
+            style={{ width: "100%", marginRight: "10px" }}
+          >
+            <Form.Item
+              name={["Citizen ID", "first"]}
+              noStyle
+              rules={[
+                {
+                  required: second || third || fourth || fifth ? true : false,
+                  message:
+                    t("Please input your") + t("Citizen ID") + " " + t("first"),
+                },
+              ]}
+            >
+              <Input
+                style={{
+                  width: "calc(10% - 10px)",
+                  marginRight: "10px",
+                  marginLeft: "10px",
+                  textAlign: "center",
+                }}
+                maxLength={1}
+              />
+            </Form.Item>
+            -
+            <Form.Item
+              name={["Citizen ID", "second"]}
+              noStyle
+              rules={[
+                {
+                  required: first || third || fourth || fifth ? true : false,
+                  message:
+                    t("Please input your") +
+                    t("Citizen ID") +
+                    " " +
+                    t("second"),
+                },
+              ]}
+            >
+              <Input
+                style={{
+                  width: "calc(20% - 10px)",
+                  marginRight: "10px",
+                  marginLeft: "10px",
+                  textAlign: "center",
+                }}
+                maxLength={4}
+              />
+            </Form.Item>
+            -
+            <Form.Item
+              name={["Citizen ID", "third"]}
+              noStyle
+              rules={[
+                {
+                  required: first || second || fourth || fifth ? true : false,
+                  message:
+                    t("Please input your") + t("Citizen ID") + " " + t("third"),
+                },
+              ]}
+            >
+              <Input
+                style={{
+                  width: "calc(20% - 10px)",
+                  marginRight: "10px",
+                  marginLeft: "10px",
+                  textAlign: "center",
+                }}
+                maxLength={5}
+              />
+            </Form.Item>
+            -
+            <Form.Item
+              name={["Citizen ID", "fourth"]}
+              noStyle
+              rules={[
+                {
+                  required: first || second || third || fifth ? true : false,
+                  message:
+                    t("Please input your") +
+                    t("Citizen ID") +
+                    " " +
+                    t("fourth"),
+                },
+              ]}
+            >
+              <Input
+                style={{
+                  width: "calc(15% - 10px)",
+                  marginRight: "10px",
+                  marginLeft: "10px",
+                  textAlign: "center",
+                }}
+                maxLength={2}
+              />
+            </Form.Item>
+            -
+            <Form.Item
+              name={["Citizen ID", "fifth"]}
+              noStyle
+              rules={[
+                {
+                  required: first || second || third || fourth ? true : false,
+                  message:
+                    t("Please input your") + t("Citizen ID") + " " + t("fifth"),
+                },
+              ]}
+            >
+              <Input
+                style={{
+                  width: "calc(10% - 10px)",
+                  marginRight: "10px",
+                  marginLeft: "10px",
+                  textAlign: "center",
+                }}
+                maxLength={1}
+              />
+            </Form.Item>
           </Form.Item>
           <Form.Item
             name="Gender"
@@ -214,6 +308,9 @@ const Testthree = () => {
                 message: t("Please input your") + t("Gender"),
               },
             ]}
+            wrapperCol={{ span: "100%" }}
+            labelCol={{ span: "100%" }}
+            style={{ width: "100%", marginRight: "10px" }}
           >
             <Radio.Group>
               <Radio value="Male">{t("Male")}</Radio>
@@ -222,8 +319,11 @@ const Testthree = () => {
             </Radio.Group>
           </Form.Item>
           <Form.Item
-            name="Mobile Phone"
+            name="prefix"
             label={t("Mobile Phone")}
+            wrapperCol={{ span: "100%" }}
+            labelCol={{ span: "100%" }}
+            style={{ width: "30%", marginRight: "10px" }}
             rules={[
               {
                 required: true,
@@ -231,12 +331,53 @@ const Testthree = () => {
               },
             ]}
           >
-            <Input addonBefore={prefixSelector} />
+            <Select
+              style={{ width: "100%" }}
+              className="flag"
+              value={edit.prefix}
+            >
+              <Option value="+66" className="option">
+                <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/TH.svg" />
+                +66
+              </Option>
+              <Option value="+1" className="option">
+                <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" />
+                +1
+              </Option>
+              <Option value="+23" className="option">
+                <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/FR.svg" />
+                +23
+              </Option>
+            </Select>
           </Form.Item>
-          <Form.Item name="Passport No" label={t("Passport No")}>
+          -
+          <Form.Item
+            name="Mobile Phone"
+            wrapperCol={{ span: "100%" }}
+            labelCol={{ span: "100%" }}
+            style={{ width: "35%", paddingLeft: "10px", marginRight: "10px" }}
+            rules={[
+              {
+                required: true,
+                message: t("Please input your") + t("Mobile Phone"),
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
           <Form.Item
+            name="Passport No"
+            label={t("Passport No")}
+            wrapperCol={{ span: "100%" }}
+            labelCol={{ span: "100%" }}
+            style={{ width: "40%", marginRight: "40%" }}
+          >
+            <Input style={{ width: "100%" }} />
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{ span: "100%" }}
+            labelCol={{ span: "100%" }}
+            style={{ width: "40%" }}
             name="Expected Salary"
             label={t("Expected Salary")}
             rules={[
@@ -246,9 +387,8 @@ const Testthree = () => {
               },
             ]}
           >
-            <Input />
+            <Input style={{ width: "100%" }} />
           </Form.Item>
-
           <Form.Item
             noStyle
             shouldUpdate={(prevValues, currentValues) =>
@@ -267,13 +407,28 @@ const Testthree = () => {
               ) : null
             }
           </Form.Item>
-          <Form.Item {...tailLayout}>
-            <Space>
+          <Form.Item
+            {...tailLayout}
+            wrapperCol={{ span: "100%" }}
+            labelCol={{ span: "100%" }}
+            style={{
+              width: "60%",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                width: "50%",
+                justifyContent: "space-around",
+
+                marginLeft: "25%",
+              }}
+            >
               <Button htmlType="submit">{t("SUBMIT")}</Button>
               <Button htmlType="button" onClick={onReset}>
                 {t("RESET")}
               </Button>
-            </Space>
+            </div>
           </Form.Item>
         </Form>
       </div>

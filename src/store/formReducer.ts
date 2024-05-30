@@ -2,7 +2,13 @@ import { createSlice, current } from "@reduxjs/toolkit";
 
 export interface DataState {
   Birthday: string;
-  "Citizen ID": string;
+  "Citizen ID": {
+    first: string;
+    second: string;
+    third: string;
+    fourth: string;
+    fifth: string;
+  };
   "Expected Salary": string;
   Firstname: string;
   Gender: string;
@@ -30,7 +36,6 @@ const dataSlice = createSlice({
   initialState,
   reducers: {
     insertData(state, action) {
-      console.log(action.payload);
       if (action.payload.key) {
         state.data = state.data.map((item) => {
           if (item.key === action.payload.key) {
@@ -45,7 +50,7 @@ const dataSlice = createSlice({
         ...action.payload,
         key: Math.random().toString(36).substring(7),
       });
-      console.log(current(state));
+
       saveLocal(state.data);
     },
     deleteData(state, action) {
@@ -58,7 +63,6 @@ const dataSlice = createSlice({
         return;
       }
       state.current = data;
-      console.log(current(state));
     },
     selectAll(state) {
       if (state.selectAll.length === state.data.length) {
@@ -80,6 +84,9 @@ const dataSlice = createSlice({
     setData(state, action) {
       state.data = action.payload;
     },
+    resetCurrent(state) {
+      state.current = {} as DataState;
+    },
   },
 });
 
@@ -91,5 +98,6 @@ export const {
   setSelect,
   deleteSelect,
   setData,
+  resetCurrent,
 } = dataSlice.actions;
 export default dataSlice.reducer;

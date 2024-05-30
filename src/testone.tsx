@@ -53,7 +53,7 @@ const Testone = () => {
               onClick={() => {
                 var copy = JSON.parse(JSON.stringify(shapeStyle));
                 var shapes = arrayRotate(copy, false);
-                console.log(shapes);
+
                 setShapeStyle(shapes);
               }}
             >
@@ -81,7 +81,7 @@ const Testone = () => {
               onClick={() => {
                 var copy = JSON.parse(JSON.stringify(shapeStyle));
                 var shapes = arrayRotate(copy, true);
-                console.log(shapes);
+
                 setShapeStyle(shapes);
               }}
             >
@@ -121,7 +121,7 @@ const Testone = () => {
                       className="box-shape"
                       onClick={() => {
                         const shuffledShapes = shuffleArray(shapeStyle);
-                        console.log(shuffledShapes);
+
                         setShapeStyle(shuffledShapes);
                       }}
                     >

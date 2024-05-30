@@ -1,12 +1,9 @@
 import React, { useEffect } from "react";
-import "./index.css";
-import { Card, Col, Row, Layout, Flex, Space } from "antd";
+import { Card, Flex, Space } from "antd";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "./store/hook";
 import "./main.scss";
-
-const { Content } = Layout;
 
 const Menu = () => {
   const language = useAppSelector((state) => state.lang.lang);

@@ -53,11 +53,21 @@ function App() {
             items,
           }}
         >
-          <Button>
-            <Space>
-              {t(language)}
-              <DownOutlined />
-            </Space>
+          <Button
+            style={{
+              width: "100px",
+              textAlign: "left",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {t(language)}
+            <DownOutlined
+              style={{
+                color: "gray",
+              }}
+            />
           </Button>
         </Dropdown>
       </Flex>

@@ -48,6 +48,11 @@ const resources = {
       "Please input your": "Please input your ",
       "Save Success": "Save Success",
       "Delete Success": "Delete Success",
+      first: "first",
+      second: "second",
+      third: "third",
+      fourth: "fourth",
+      fifth: "fifth",
     },
   },
   TH: {
@@ -98,6 +103,11 @@ const resources = {
       "Please input your": "กรุณากรอก ",
       "Save Success": "บันทึกข้อมูลสำเร็จ",
       "Delete Success": "ลบข้อมูลสำเร็จ",
+      first: "ช่องแรก",
+      second: "ช่องที่สอง",
+      third: "ช่องที่สาม",
+      fourth: "ช่องที่สี่",
+      fifth: "ช่องที่ห้า",
     },
   },
 };

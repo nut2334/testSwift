@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Table, Checkbox } from "antd";
 import { useAppSelector, useAppDispatch } from "./store/hook";
 import { DataState } from "./store/formReducer";
@@ -72,7 +72,7 @@ const Tabledata = () => {
       render: (_, record) => (
         <>
           <Button
-            type="link"
+            type="text"
             onClick={() => {
               handleEdit(record.key);
             }}
@@ -80,7 +80,7 @@ const Tabledata = () => {
             {t("EDIT")}
           </Button>
           <Button
-            type="link"
+            type="text"
             onClick={() => {
               handleDelete(record.key);
             }}
@@ -95,11 +95,6 @@ const Tabledata = () => {
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataState[]) => {
       dispatch(setSelect(selectedRowKeys as string[]));
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
     },
     selectedRowKeys: all,
   };
