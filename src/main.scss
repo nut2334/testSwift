@@ -1,0 +1,208 @@
+// สร้างตัวแปรสี
+$color-primary: #6eda78;
+$color-secondary: #ffa200;
+$color-shape: gray;
+
+body {
+  padding: 10px;
+  background: linear-gradient(90deg, $color-primary 0%, $color-secondary 100%);
+}
+.lang-dropdown {
+  position: absolute;
+  top: 10px;
+}
+.center-style {
+  display: flex;
+  justify-content: center;
+  padding-top: 70px;
+}
+.bigbox {
+  display: "inline-block";
+}
+.title {
+  position: absolute;
+  top: 10px;
+}
+
+//Menu
+.nav-link {
+  text-decoration: none;
+}
+.card {
+  width: 300px;
+}
+.box-style {
+  width: 100%;
+  height: 90vh;
+}
+//Test1
+//layout
+.flex-style {
+  display: flex;
+  justify-content: space-around;
+}
+//รูปทรงต่างๆ
+.triangle-left {
+  width: 0;
+  height: 0;
+  border-top: 50px solid transparent;
+  border-right: 100px solid $color-shape;
+  border-bottom: 50px solid transparent;
+}
+.triangle-up {
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 100px solid $color-shape;
+}
+.triangle-down {
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 100px solid $color-shape;
+}
+.triangle-right {
+  width: 0;
+  height: 0;
+  border-top: 50px solid transparent;
+  border-left: 100px solid $color-shape;
+  border-bottom: 50px solid transparent;
+}
+.square {
+  width: 100px;
+  height: 100px;
+  background: $color-shape;
+}
+.trapezoid {
+  border-bottom: 100px solid $color-shape;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  height: 0;
+  width: 100px;
+}
+.parallelogram {
+  width: 150px;
+  height: 100px;
+  transform: skew(20deg);
+  background: $color-shape;
+}
+.rectangle {
+  width: 200px;
+  height: 100px;
+  background: $color-shape;
+}
+.circle {
+  width: 100px;
+  height: 100px;
+  background: $color-shape;
+  border-radius: 50%;
+}
+.oval {
+  width: 200px;
+  height: 100px;
+  background: $color-shape;
+  border-radius: 100px / 50px;
+}
+//ปุ่ม
+%button-style {
+  position: relative;
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.button-style {
+  @extend %button-style;
+  width: 250px;
+  height: 120px;
+}
+.buttonupdown-style {
+  @extend %button-style;
+  width: 530px;
+  height: 120px;
+  flex-direction: column;
+}
+.box-shape {
+  @extend %button-style;
+  width: 250px;
+  margin-bottom: 10px;
+}
+.box-shape:hover * {
+  background: white;
+}
+.box-shape:hover .trapezoid {
+  border-bottom-color: white;
+  border-left-color: $color-secondary;
+  border-right-color: $color-secondary;
+}
+.box-shape:active .trapezoid {
+  border-left-color: $color-primary;
+  border-right-color: $color-primary;
+}
+
+%action-hover {
+  background-color: $color-secondary;
+  color: white;
+  cursor: pointer;
+}
+%action-active {
+  background-color: $color-primary;
+}
+.button-style:hover,
+.buttonupdown-style:hover,
+.box-shape:hover {
+  @extend %action-hover;
+}
+
+.button-style:active,
+.buttonupdown-style:active,
+.box-shape:active {
+  @extend %action-active;
+}
+
+.tag {
+  position: absolute;
+  bottom: -10px;
+  z-index: 999;
+  left: 50%;
+  transform: translateX(-50%);
+  background: $color-primary;
+  padding: 0.1em 0.5rem;
+  border-radius: 10px;
+  color: white;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none;
+}
+
+//Test2
+%flagsize {
+  width: 20px;
+  height: auto;
+  margin-right: 8px;
+}
+.flag {
+  width: 100px;
+
+  img {
+    @extend %flagsize;
+  }
+}
+.option {
+  display: flex;
+  align-items: center;
+  img {
+    @extend %flagsize;
+  }
+}
+.form-style {
+  border: black 1px solid;
+  border-radius: 10px;
+  padding: 10px;
+  width: 1000px;
+}

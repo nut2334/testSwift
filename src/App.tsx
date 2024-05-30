@@ -1,25 +1,74 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Menu from "./menu";
+import { Button, Space, Dropdown, Flex, Layout } from "antd";
+import type { MenuProps } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+import Testone from "./testone";
+import { useAppSelector, useAppDispatch } from "./store/hook";
+import { changeLang } from "./store/langReducer";
+import { useTranslation } from "react-i18next";
+import Testthree from "./testthree";
+import "./main.scss";
+import { setData } from "./store/formReducer";
 
 function App() {
+  const language = useAppSelector((state) => state.lang.lang);
+  const dispatch = useAppDispatch();
+  const { i18n } = useTranslation();
+  const { t } = useTranslation();
+  const items: MenuProps["items"] = [
+    {
+      label: t("TH"),
+      key: "1",
+      onClick: () => {
+        dispatch(changeLang("TH"));
+      },
+    },
+    {
+      label: t("EN"),
+      key: "2",
+      onClick: () => {
+        dispatch(changeLang("EN"));
+      },
+    },
+  ];
+
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language]);
+
+  useEffect(() => {
+    var data = window.localStorage.getItem("data");
+    if (data) {
+      dispatch(setData(JSON.parse(data)));
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <Flex justify="flex-end" align="flex-start" className="lang-box">
+        <Dropdown
+          menu={{
+            items,
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Button>
+            <Space>
+              {t(language)}
+              <DownOutlined />
+            </Space>
+          </Button>
+        </Dropdown>
+      </Flex>
+      <BrowserRouter>
+        <Routes>
+          <Route path={`/`} element={<Menu />} />
+          <Route path={`/Test1`} element={<Testone />} />
+          <Route path={`/Test3`} element={<Testthree />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
